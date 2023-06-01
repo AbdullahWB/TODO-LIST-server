@@ -43,6 +43,24 @@ async function run() {
             res.send(result)
         })
 
+        app.put('/list/:id', async (req, res) => { 
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true }
+            const updatedData = req.body;
+            const Data = {
+                $set: {
+                    title: updatedData.title,
+                    time: updatedData.time,
+                    status: updatedData.status,
+                    description: updatedData.description,
+                    date: updatedData.date,
+                }
+            };
+            const result = await dataCollection.updateOne(filter, Data, options)
+            res.send(result)
+        })
+
         app.get('/list/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
